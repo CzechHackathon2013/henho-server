@@ -1,13 +1,10 @@
 var mysql = require('mysql');
 
 var pool = mysql.createPool({
-	host: "localhost",
-	//user: "root", //"adminGqFFrbH"
-	//password: "q", //"CFa7-xWAFinc"
-	//database: "henho", //"nodejs"
-	user: "adminGqFFrbH",
-	password: "CFa7-xWAFinc",
-	database: "nodejs",
+	host     : 'process.env.OPENSHIFT_MYSQL_DB_HOST',
+	user     : 'process.env.OPENSHIFT_MYSQL_DB_USERNAME',
+	password : 'process.env.OPENSHIFT_MYSQL_DB_PASSWORD',
+	database : 'process.env.OPENSHIFT_GEAR_NAME',
 	connectionLimit: 10,
 	supportBigNumbers: true
 });
