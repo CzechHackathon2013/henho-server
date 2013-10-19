@@ -15,7 +15,6 @@ app.configure(function() {
 app.get('/', request.index);
 
 //fire it
-var port = process.env.PORT || 3000;
-app.listen(port, function() {
-	console.log('Go me! ' + port);
+app.listen(8080, function() {
+	console.log('Go me! ');
 });
