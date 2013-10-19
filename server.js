@@ -5,48 +5,59 @@ var orm = require('orm');
 var db = require('./database');
 var app = express();
 
+if ('production' === app.get('env')) {	//Openshift
+	process.env.MYSQL_DB_HOST = process.env.OPENSHIFT_MYSQL_DB_HOST;
+	process.env.MYSQL_DB_USERNAME = process.env.OPENSHIFT_MYSQL_DB_USERNAME;
+	process.env.MYSQL_DB_PASSWORD = process.env.OPENSHIFT_MYSQL_DB_PASSWORD;
+	process.env.MYSQL_DB_DATABASE = process.env.OPENSHIFT_GEAR_NAME;
+	process.env.DOMAIN = process.env.OPENSHIFT_NODEJS_IP;
+	process.env.PORT = process.env.OPENSHIFT_NODEJS_PORT;
+} else if ('development' === app.get('env')) {
+	process.env.MYSQL_DB_HOST = "localhost";
+	process.env.MYSQL_DB_USERNAME = "root";
+	process.env.MYSQL_DB_PASSWORD = "q";
+	process.env.MYSQL_DB_DATABASE = "henho";
+	process.env.DOMAIN = "localhost";
+	process.env.PORT = 3000;
+	app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
+}
 
-app.configure(function () {
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(app.router);
-    app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
-});
 
-app.use(orm.express("mysql://henho:henho@localhost/henho", {
-        define: function (db, models, next) {
-            models.person = db.define("person", {
-                username: String,
-                password: String,
-                email: String
-            }, {
-                methods: {
-                    fullName: function () {
-                        return this.name + ' ' + this.surname;
-                    }
-                },
-                validations: {
-                    username: orm.enforce.required("Chybí uživatelské jméno"),
-                    email: orm.enforce.patterns.email()
-                }
-            });
-            next();
+app.use(orm.express("mysql://" + process.env.MYSQL_DB_USERNAME + ":" + process.env.MYSQL_DB_PASSWORD + "@" + process.env.MYSQL_DB_HOST + "/" + process.env.MYSQL_DB_DATABASE, {
+	define: function(db, models, next) {
+		models.person = db.define("person", {
+			username: String,
+			password: String,
+			email: String
+		}, {
+			methods: {
+				fullName: function() {
+					return this.name + ' ' + this.surname;
+				}
+			},
+			validations: {
+				username: orm.enforce.required("Chybí uživatelské jméno"),
+				email: orm.enforce.patterns.email()
+			}
+		});
+		next();
 
-            db.drop();
-            db.sync();
-        }
-    }
+		db.drop();
+		db.sync();
+	}
+}
 ));
 
-app.get("/", function (req, res) {
-    // req.models is a reference to models used above in define()
-//    req.models.person.find(...);
-});
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(express.logger());
+app.use(app.router);
+
+//routes
+app.get('/', request.index);
+app.get('/meetings/:id', request.getMeeting);
 
 //fire it
-var domain = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
-var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-
-app.listen(port, domain, function () {
-    console.log('Go me! ' + port);
+app.listen(process.env.PORT, process.env.DOMAIN, function() {
+	console.log('server is running...');
 });
