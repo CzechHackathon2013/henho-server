@@ -1,7 +1,9 @@
-var express = require('express'),
-		request = require('./requests');
+var express = require('express');
+var request = require('./requests');
 
+var db = require('./database');
 var app = express();
+
 
 app.configure(function() {
 	app.use(express.bodyParser());
@@ -13,6 +15,7 @@ app.configure(function() {
 app.get('/', request.index);
 
 //fire it
-app.listen(3000, function() {
-	console.log('Go me!');
+var port = process.env.PORT || 3000;
+app.listen(port, function() {
+	console.log('Go me! ' + port);
 });

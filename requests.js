@@ -1,16 +1,14 @@
-/*
-var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://root:root@ds027908.mongolab.com:27908/blog');
-
-mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-mongoose.connection.once('open', function callback() {
-	console.log("Database is listening");
-});
-var User = require('./models/user')(mongoose);
-var UserModel = mongoose.model('User', User);
-*/
+var db = require('./database');
 
 this.index = function(req, res) {
-	res.send('wee');
+	db.getRecords("jentak", function(err, results) {
+		if (err) {
+			res.json(500, "Server Error");
+			return;
+		}
+		// Respond with results as JSON
+		res.json(results);
+	});
 };
+ 
