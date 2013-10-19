@@ -15,6 +15,9 @@ app.configure(function() {
 app.get('/', request.index);
 
 //fire it
-app.listen(8080, function() {
-	console.log('Go me! ');
+var domain  = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port    = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+
+app.listen(port, domain, function() {
+	console.log('Go me! ' + port);
 });
