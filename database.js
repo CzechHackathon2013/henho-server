@@ -9,17 +9,14 @@ var pool = mysql.createPool({
 	supportBigNumbers: true
 });
 
-this.getRecords = function(params, callback) {
-
-	// get a connection from the pool
+this.getMeeting = function(id, callback) {
 	pool.getConnection(function(err, connection) {
 		if (err) {
 			console.log(err);
 			callback(true);
 			return;
 		}
-		// make the query
-		connection.query("SELECT * FROM test", [params], function(err, results) {
+		connection.query("SELECT * FROM `meeting` LEFT JOIN `user` ON `meeting`.`creator_id` = `user`.`id` WHERE `meeting`.`id` = ?", [id], function(err, results) {
 			if (err) {
 				console.log(err);
 				callback(true);
