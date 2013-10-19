@@ -6,7 +6,7 @@
     "OpenShift",
     "Node.js",
     "application",
-    "openshift"
+    "orm"
   ],
   "author": {
     "name": "OpenShift",
@@ -26,7 +26,8 @@
 
   "dependencies": {
 		"express": ">= 3.x",
-		"mysql" : "2.0"
+		"mysql" : "2.0",
+        "orm": ">=2.1.3"
   },
   "devDependencies": {},
   "bundleDependencies": [],
