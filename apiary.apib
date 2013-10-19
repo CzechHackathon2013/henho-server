@@ -1,0 +1,226 @@
+
+
+--- Hen Ho ---
+
+---
+Appoitment manager
+---
+
+--
+Meeting
+--
+
+
+Create meeting.
+POST /meetings/
+> Content-Type: application/json
+{
+    "subject": "First schedule for developers",
+    "place":{
+        "title":"Tech square"
+        },
+    "note":"Thanks for comming",
+    "duration":30,
+    "users": [
+        {
+            "name":"Vojta",
+            "email":"v.dubr@hotmail.com"
+        },
+        {
+            "name":"Kuba",
+            "email":"jkdubr@hotmail.com"
+        },
+        {
+            "name":"Jirka",
+            "email":"sifalda.jiri@gmail.com"
+            },
+        {
+            "name":"Lojza",
+            "email":"lojza@pepa.com"
+        },
+        {
+            "name":"Honza",
+            "email":"honzasmit@lala.com"
+        }
+    ],
+    "proposedTimes":[
+        {
+            "date":"19.10.2013",
+            "start":"14:00",
+            "end":"19:00",
+        },{
+            "date":"19.10.2013",
+            "start":"10:00",
+            "end":"12:30",
+        },
+        {
+            "date":"2013/10/12",
+            "start":"10:00",
+            "end":"13:00",
+        }
+        ]
+}
+< 201
+< Content-Type: application/json
+{ "status": "created", "id":{meetingId} }
+
+
+
+Get list of users and proposed times of meeting.
+GET /meetings/{meetingId}
+< 200
+< Content-Type: application/json
+{
+    "subject": "First schedule for developers",
+    "date":null,
+    "duration":"40",
+    "place":{
+        "title":"Tech square",
+        "coords":{
+            "lon":"14.4070633",
+            "lat":"50.0515044"
+            }
+        },
+    "note":"Thanks for comming",
+    "users": [
+        {"name":"Vojta"},
+        {"name":"Kuba"},
+        {"name":"Jirka"},
+        {"name":"Lojza"},
+        {"name":"Honza"}
+    ],
+    "proposedTimes":[
+        {
+            "date":"19.10.2013",
+            "start":"13:00",
+            "end":"16:00"
+        },{
+            "date":"19.10.2013",
+            "start":"9:00",
+            "end":"12:30"
+        },
+        {
+            "date":"21.10.2013",
+            "start":"11:00",
+            "end":"18:00"
+        }
+        ],
+    "acceptedTimes":[
+            {
+                "name":"Vojta",
+                "times":[
+                    {
+                    "date":"19.10.2013",
+                    "start":"14:00",
+                    "end":"19:00"
+                    },{
+                    "date":"21.10.2013",
+                    "start":"11:00",
+                    "end":"17:00"
+                    }
+                    ]
+            },{
+                "name":"Jirka",
+                "times":[
+                    {
+                    "date":"19.10.2013",
+                    "start":"15:00",
+                    "end":"18:00"
+                    },{
+                    "date":"21.10.2013",
+                    "start":"14:00",
+                    "end":"16:00"
+                    }
+                    ]
+            }
+    ]
+}
+
+
+Get userID, list of users and proposed times of meeting.
+GET /meetings/role/{userHash}
+< 200
+< Content-Type: application/json
+{
+    "userId":55,
+    "meetingId":1,
+    "subject": "First schedule for developers",
+    "date":null,
+    "place":{
+        "title":"Tech square",
+        "coords":{
+            "lon":"14.4070633",
+            "lat":"50.0515044"
+            }
+        },
+    "note":"Thanks for comming",
+    "users": [
+        {"name":"Vojta"},
+        {"name":"Kuba"},
+        {"name":"Jirka"},
+        {"name":"Lojza"},
+        {"name":"Honza"}
+    ],
+    "proposedTimes":[
+        {
+            "date":"19.10.2013",
+            "start":"14:00",
+            "end":"19:00"
+        },
+        {
+            "date":"21.10.2013",
+            "start":"10:00",
+            "end":"13:00"
+        }
+        ],
+    "acceptedTimes":[
+            {
+                "name":"Vojta",
+                "times":[
+                    {
+                    "date":"19.10.2013",
+                    "start":"14:00",
+                    "end":"19:00"
+                    },{
+                    "date":"21.10.2013",
+                    "start":"11:00",
+                    "end":"17:00"
+                    }
+                    ]
+            },{
+                "name":"Jirka",
+                "times":[
+                    {
+                    "date":"19.10.2013",
+                    "start":"15:00",
+                    "end":"18:00"
+                    },{
+                    "date":"21.10.2013",
+                    "start":"14:00",
+                    "end":"16:00"
+                    }
+                    ]
+            }
+    ]
+}
+
+Save accepted time.
+POST /meetings/{meetingId}/acceptedtime
+> Content-Type: application/json
+{
+    "userId":55,
+    "times":[
+              {
+                "date":"19.10.2013",
+                "start":"14:00",
+                "end":"19:00"
+                },{
+                "date":"21.10.2013",
+                "start":"11:00",
+                "end":"17:00"
+            }
+    ]
+}
+< 201
+< Content-Type: application/json
+{ "status": "created", "id":{meetingId} }
