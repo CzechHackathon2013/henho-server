@@ -25,23 +25,13 @@ if ('production' === app.get('env')) {	//Openshift
 
 app.use(orm.express("mysql://" + process.env.MYSQL_DB_USERNAME + ":" + process.env.MYSQL_DB_PASSWORD + "@" + process.env.MYSQL_DB_HOST + "/" + process.env.MYSQL_DB_DATABASE, {
 	define: function(db, models, next) {
-		models.person = db.define("person", {
-			username: String,
-			password: String,
-			email: String
-		}, {
-			methods: {
-				fullName: function() {
-					return this.name + ' ' + this.surname;
-				}
-			},
-			validations: {
-				username: orm.enforce.required("Chybí uživatelské jméno"),
-				email: orm.enforce.patterns.email()
-			}
-		});
+		db.load("./models", function(err) {
+			var User = db.models.user;
+			var Meeting = db.models.meeting;
+			
+			console.log(User);
+		})
 		next();
-
 		db.drop();
 		db.sync();
 	}
