@@ -13,8 +13,14 @@ this.getMeeting = function (req, res) {
                 users[i] = user;
             }
             meeting.users = users;
-            meeting.getProposedTimes(function (err, proposedTime) {
-                meeting.proposedTimes = proposedTime;
+            meeting.getProposedTimes(function (err, proposedTimes) {
+                for (var i = 0; i < proposedTimes.length; i++) {
+                    var proposedTime = {};
+                    proposedTime.start = proposedTimes[i].start.valueOf();
+                    proposedTime.end = proposedTimes[i].end.valueOf();
+                    proposedTimes[i] = proposedTime
+                }
+                meeting.proposedTimes = proposedTimes;
                 res.json(meeting);
             });
         });
