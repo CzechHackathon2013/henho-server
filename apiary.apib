@@ -205,17 +205,19 @@ GET /meetings/role/{userHash}
 }
 
 Save accepted time.
-POST /meetings/{meetingId}/acceptedtime
+POST /meetings/{meetingId}/acceptedtimes
 > Content-Type: application/json
 {
+    "note":"Poznámka",
     "userId":55,
     "times":[
               {
-                "date":"2013/10/19",
+                "date":"2013-10-19",
                 "start":"14:00",
                 "end":"19:00"
-                },{
-                "date":"2013/10/21",
+                },
+                {
+                "date":"2013-10-21",
                 "start":"11:00",
                 "end":"17:00"
             }
