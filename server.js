@@ -13,8 +13,8 @@ if ('production' === app.get('env')) {	//Openshift
     process.env.PORT = process.env.OPENSHIFT_NODEJS_PORT;
 } else if ('development' === app.get('env')) {
     process.env.MYSQL_DB_HOST = "localhost";
-    process.env.MYSQL_DB_USERNAME = "henho";
-    process.env.MYSQL_DB_PASSWORD = "henho";
+    process.env.MYSQL_DB_USERNAME = "root";
+    process.env.MYSQL_DB_PASSWORD = "q";
     process.env.MYSQL_DB_DATABASE = "henho";
     process.env.DOMAIN = "localhost";
     process.env.PORT = 3000;
@@ -39,6 +39,7 @@ app.use(orm.express("mysql://" + process.env.MYSQL_DB_USERNAME + ":" + process.e
 ));
 
 
+app.use("/", express.static(__dirname + '/public'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.logger());
@@ -46,10 +47,10 @@ app.use(app.router);
 
 
 //routes
-app.get('/', request.index);
-app.get('/meetings/:id', request.getMeeting);
-app.post('/meetings', request.createMeeting);
-app.post('/meetings/:id/accepted-times', request.acceptTimes);
+app.get('/api/', request.index);
+app.get('/api/meetings/:id', request.getMeeting);
+app.post('/api/meetings', request.createMeeting);
+app.post('/api/meetings/:id/accepted-times', request.acceptTimes);
 
 //fire it
 app.listen(process.env.PORT, process.env.DOMAIN, function () {
