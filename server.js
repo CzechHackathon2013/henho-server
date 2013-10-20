@@ -27,8 +27,8 @@ app.use(orm.express("mysql://" + process.env.MYSQL_DB_USERNAME + ":" + process.e
                 models.user = db.models.user;
                 models.meeting = db.models.meeting;
                 models.proposedTime = db.models.proposedTime;
-                models.role = db.models.role;
-                models.meeting.hasMany('users', models.user, {}, { reverse: 'meetings' });
+//                models.role = db.models.role;
+                models.meeting.hasMany('users', models.user, {role: String}, { reverse: 'meetings' });
                 models.proposedTime.hasOne('meeting', models.meeting, {reverse: 'proposedTimes'});
             });
             next();
@@ -37,7 +37,6 @@ app.use(orm.express("mysql://" + process.env.MYSQL_DB_USERNAME + ":" + process.e
         }
     }
 ));
-
 
 
 app.use(express.bodyParser());
